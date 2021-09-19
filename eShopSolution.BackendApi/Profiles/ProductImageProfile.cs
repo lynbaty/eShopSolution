@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace eShopSolution.Application.Catalog.Profiles
+namespace eShopSolution.BackendApi.Profiles
 {
-    class ProductImageProfile : Profile
+    public class ProductImageProfile : Profile
     {
         public ProductImageProfile()
         {
