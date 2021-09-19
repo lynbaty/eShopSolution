@@ -10,5 +10,7 @@ namespace eShopSolution.ViewModels.Products
         public string Keyword { set; get; }
 
         public int[] CategoryIds { set; get; }
+
+        public string LanguageId { set; get; }
     }
 }
