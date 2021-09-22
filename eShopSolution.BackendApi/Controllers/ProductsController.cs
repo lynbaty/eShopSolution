@@ -52,7 +52,7 @@ namespace eShopSolution.BackendApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
+        public async Task<IActionResult> Create([FromBody] ProductCreateRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -66,7 +66,7 @@ namespace eShopSolution.BackendApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromForm] ProductUpdateRequest request)
+        public async Task<IActionResult> Update([FromBody] ProductUpdateRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace eShopSolution.BackendApi.Controllers
         }
 
         [HttpPatch("/{productId}/price")]
-        public async Task<IActionResult> UpdatePrice([FromRoute] int productId, [FromForm] decimal price)
+        public async Task<IActionResult> UpdatePrice([FromRoute] int productId, [FromBody] decimal price)
         {
             if (!ModelState.IsValid)
             {
@@ -102,7 +102,7 @@ namespace eShopSolution.BackendApi.Controllers
         }
 
         [HttpPatch("/{productId}/stock")]
-        public async Task<IActionResult> UpdateStock([FromRoute] int productId, [FromForm] int Quantity)
+        public async Task<IActionResult> UpdateStock([FromRoute] int productId, [FromBody] int Quantity)
         {
             if (!ModelState.IsValid)
             {
@@ -129,7 +129,7 @@ namespace eShopSolution.BackendApi.Controllers
         }
 
         [HttpPost("/{productId}/images")]
-        public async Task<IActionResult> AddImages([FromRoute] int productId, [FromForm] ProductImageCreateRequest request)
+        public async Task<IActionResult> AddImages([FromRoute] int productId, [FromBody] ProductImageCreateRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -169,7 +169,7 @@ namespace eShopSolution.BackendApi.Controllers
         }
 
         [HttpPatch("/{productId}/image/{imageId}")]
-        public async Task<IActionResult> UpdateImage([FromRoute] int productId, [FromRoute] int imageId, [FromForm] ProductImageUpdateRequest request)
+        public async Task<IActionResult> UpdateImage([FromRoute] int productId, [FromRoute] int imageId, [FromBody] ProductImageUpdateRequest request)
         {
             if (!ModelState.IsValid)
             {

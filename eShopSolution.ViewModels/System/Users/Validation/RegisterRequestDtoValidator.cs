@@ -18,6 +18,10 @@ namespace eShopSolution.ViewModels.System.Users.Validation
                                     .Matches(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$").WithMessage("Mail Format not true");
             RuleFor(rr => rr.PhoneNumber).Matches(@"\d{10}").WithMessage("Phone format not true");
 
+            RuleFor(rr => rr.Password).NotNull().WithMessage("Không được để trống")
+                                      .MinimumLength(6).WithMessage("Password từ 6 chữ số");
+            RuleFor(rr => rr).Must(x => x.ComfirmPassword == x.Password).WithMessage("Mật khẩu không trùng khớp");
+
             //RuleFor(rr => rr).Custom((fn, context) =>
             //{
             //    if (fn.FirstName.Contains("an"))

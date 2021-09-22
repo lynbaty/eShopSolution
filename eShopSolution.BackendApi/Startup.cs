@@ -55,8 +55,6 @@ namespace eShopSolution.BackendApi
             services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUserService, UserService>();
-            services.AddControllers()
-                    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestDtoValidator>());
 
             services.AddSwaggerGen(c =>
             {
@@ -112,12 +110,14 @@ namespace eShopSolution.BackendApi
                     ValidIssuer = issuer,
                     ValidateAudience = true,
                     ValidAudience = issuer,
-                    ValidateLifetime = true,
+                    ValidateLifetime = false,
                     ValidateIssuerSigningKey = true,
                     ClockSkew = System.TimeSpan.Zero,
                     IssuerSigningKey = new SymmetricSecurityKey(signingKeyBytes)
                 };
             });
+            services.AddControllers()
+                   .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestDtoValidator>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -133,12 +133,12 @@ namespace eShopSolution.BackendApi
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger eShopSolution V1");
             });
+
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
 
             app.UseRouting();
-
             app.UseAuthentication();
 
             app.UseAuthorization();

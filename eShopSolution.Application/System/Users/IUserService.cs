@@ -1,4 +1,6 @@
-﻿using eShopSolution.ViewModels.System.Users;
+﻿using eShopSolution.ViewModels.Common;
+using eShopSolution.ViewModels.Products;
+using eShopSolution.ViewModels.System.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,5 +13,13 @@ namespace eShopSolution.Application.System.Users
         Task<string> Authencate(LoginRequestDto request);
 
         Task<bool> Register(RegisterRequestDto request);
+
+        Task<PagedResult<UserViewModel>> GetUserAllPaging(UserRequestDto request);
+
+        Task<bool> Update(Guid Id, UserViewModel request);
+
+        Task<UserViewModel> GetbyId(Guid Id);
+
+        Task<bool> Delete(Guid Id);
     }
 }
