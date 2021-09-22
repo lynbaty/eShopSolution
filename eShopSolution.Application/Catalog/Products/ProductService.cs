@@ -56,7 +56,9 @@ namespace eShopSolution.Application.Catalog.Products
                             }).ToListAsync();
             var pageResult = new PagedResult<ProductViewModel>
             {
-                TotalRecord = totalitems,
+                TotalRecords = totalitems,
+                PageSize = request.pageSize,
+                PageIndex = request.pageIndex,
                 items = data
             };
             return pageResult;
@@ -199,7 +201,9 @@ namespace eShopSolution.Application.Catalog.Products
                             .ToListAsync();
             var pageResult = new PagedResult<ProductViewModel>
             {
-                TotalRecord = totalitems,
+                TotalRecords = totalitems,
+                PageIndex = request.pageIndex,
+                PageSize = request.pageSize,
                 items = data
             };
             return pageResult;

@@ -11,8 +11,8 @@ namespace eShopSolution.ViewModels.System.Users.Validation
         public LoginRequestDtoValidator()
         {
             RuleFor(lr => lr.UserName).NotNull().MaximumLength(20);
-            RuleFor(lr => lr.Password).NotNull().WithMessage("Not empty form")
-                                      .MinimumLength(6).WithMessage("Password must be mininum 6 character");
+            RuleFor(lr => lr.Password).NotNull().WithMessage("Không để trống")
+                                      .MinimumLength(6).WithMessage("Password must be mininum 6 characters");
         }
     }
 }

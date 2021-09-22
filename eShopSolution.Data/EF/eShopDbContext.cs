@@ -10,12 +10,12 @@ using System.Text;
 
 namespace eShopSolution.Data.EF
 {
-    public class eShopDbContext : IdentityDbContext<AppUser,AppRole,Guid>
+    public class eShopDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     {
         public eShopDbContext(DbContextOptions<eShopDbContext> options) : base(options)
         {
-
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure
@@ -49,6 +49,7 @@ namespace eShopSolution.Data.EF
             //see Data
             modelBuilder.Seed();
         }
+
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
 
@@ -75,6 +76,5 @@ namespace eShopSolution.Data.EF
         public DbSet<ProductImage> ProductImages { get; set; }
 
         public DbSet<Slide> Slides { get; set; }
-
     }
 }
