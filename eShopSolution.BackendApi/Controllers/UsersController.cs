@@ -81,5 +81,21 @@ namespace eShopSolution.BackendApi.Controllers
             if (!result) return BadRequest();
             return Ok(result);
         }
+
+        [HttpGet("{id}/Roles")]
+        public async Task<IActionResult> GetRolesbyId([FromRoute] Guid id)
+        {
+            var result = await _userService.GetRolesbyId(id);
+            if (result == null) return BadRequest();
+            return Ok(result);
+        }
+
+        [HttpPost("{id}/Roles")]
+        public async Task<IActionResult> AddRolesbyId([FromRoute] Guid id, [FromBody] UserRolesDto roles)
+        {
+            var result = await _userService.AddRolesbyId(id, roles);
+            if (!result) return BadRequest();
+            return Ok();
+        }
     }
 }

@@ -157,5 +157,27 @@ namespace eShopSolution.Application.System.Users
 
             return result.Result.Succeeded;
         }
+
+        public async Task<IList<string>> GetRolesbyId(Guid Id)
+        {
+            var user = await _userManager.FindByIdAsync(Id.ToString());
+            var result = await _userManager.GetRolesAsync(user);
+            return result;
+        }
+
+        public async Task<bool> AddRolesbyId(Guid Id, UserRolesDto roles)
+        {
+            var user = await _userManager.FindByIdAsync(Id.ToString());
+
+            var has = await _userManager.GetRolesAsync(user);
+
+            IList<string> add = roles.roles.Except(has).ToList();
+            IList<string> remove = has.Except(roles.roles).ToList();
+
+            await _userManager.RemoveFromRolesAsync(user, remove);
+            var result = await _userManager.AddToRolesAsync(user, add);
+
+            return result.Succeeded;
+        }
     }
 }

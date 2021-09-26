@@ -1,4 +1,9 @@
 using eShopSolution.AdminWeb.Services;
+using eShopSolution.AdminWeb.Services.CategoryClient;
+using eShopSolution.AdminWeb.Services.Client;
+using eShopSolution.AdminWeb.Services.LanguageClient;
+using eShopSolution.AdminWeb.Services.ProductsClient;
+using eShopSolution.AdminWeb.Services.RolesClient;
 using eShopSolution.ViewModels.System.Users.Validation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -36,7 +41,12 @@ namespace eShopSolution.AdminWeb
                });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IRolesClient, RolesClient>();
             services.AddTransient<IUserClient, UserClient>();
+            services.AddTransient<ILanguageClient, LanguageClient>();
+            services.AddTransient<IClientService, ClientService>();
+            services.AddTransient<IProductClient, ProductClient>();
+            services.AddTransient<ICategoryClient, CategoryClient>();
             services.AddHttpClient();
 
             // Github API versioning)});

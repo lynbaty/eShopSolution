@@ -23,6 +23,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using FluentValidation.AspNetCore;
 using eShopSolution.ViewModels.System.Users.Validation;
+using eShopSolution.Application.System.Roles;
+using eShopSolution.Application.System.Languages;
+using eShopSolution.Application.Catalog.Categories;
 
 namespace eShopSolution.BackendApi
 {
@@ -55,6 +58,9 @@ namespace eShopSolution.BackendApi
             services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRolesService, RolesService>();
+            services.AddTransient<ILanguageService, LanguageService>();
+            services.AddTransient<ICategoryApi, CategoryApi>();
 
             services.AddSwaggerGen(c =>
             {

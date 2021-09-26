@@ -3,6 +3,7 @@ using eShopSolution.Application.Catalog.Common;
 using eShopSolution.Data.EF;
 using eShopSolution.Data.Entities;
 using eShopSolution.Utilities.Exceptions;
+using eShopSolution.ViewModels.Categories;
 using eShopSolution.ViewModels.Common;
 using eShopSolution.ViewModels.Products;
 using Microsoft.AspNetCore.Http;
@@ -35,6 +36,10 @@ namespace eShopSolution.Application.Catalog.Products
             {
                 items = items.Where(i => request.CategoryId == i.pic.CategoryId);
             }
+            if (request.CategoryId != null)
+            {
+                items = items.Where(i => i.pic.CategoryId == request.CategoryId);
+            }
 
             int totalitems = items.Count();
             var data = await items.Skip((request.pageIndex - 1) * request.pageSize).Take(request.pageSize)
@@ -54,12 +59,13 @@ namespace eShopSolution.Application.Catalog.Products
                                 SeoAlias = i.pt.SeoAlias,
                                 LanguageId = i.pt.LanguageId
                             }).ToListAsync();
+            var data2 = data.GroupBy(d => d.Id).Select(g => g.First()).ToList();
             var pageResult = new PagedResult<ProductViewModel>
             {
                 TotalRecords = totalitems,
-                PageSize = request.pageSize,
                 PageIndex = request.pageIndex,
-                items = data
+                PageSize = request.pageSize,
+                items = data2
             };
             return pageResult;
         }
@@ -167,17 +173,19 @@ namespace eShopSolution.Application.Catalog.Products
         {
             var items = from p in _context.Products
                         join pt in _context.ProductTranslations on p.Id equals pt.ProductId
-                        join pic in _context.ProductInCategories on p.Id equals pic.ProductId
-                        join c in _context.Categories on pic.CategoryId equals c.Id
+                        join pic in _context.ProductInCategories on p.Id equals pic.ProductId into ppic
+                        from pic in ppic.DefaultIfEmpty()
+                            //join c in _context.Categories on pic.CategoryId equals c.Id into picc
+                            //from c in picc.DefaultIfEmpty()
                         where pt.LanguageId == request.LanguageId
                         select new { p, pt, pic };
             if (!string.IsNullOrEmpty(request.Keyword))
             {
                 items = items.Where(i => i.pt.Name.Contains(request.Keyword));
             }
-            if (request.CategoryIds.Count() > 0)
+            if (request.CategoryId != null)
             {
-                items = items.Where(i => request.CategoryIds.Contains(i.pic.CategoryId));
+                items = items.Where(i => i.pic.CategoryId.ToString() == request.CategoryId);
             }
 
             int totalitems = items.Count();
@@ -199,12 +207,13 @@ namespace eShopSolution.Application.Catalog.Products
                                 LanguageId = i.pt.LanguageId
                             })
                             .ToListAsync();
+            var data2 = data.GroupBy(d => d.Id).Select(g => g.First()).ToList();
             var pageResult = new PagedResult<ProductViewModel>
             {
                 TotalRecords = totalitems,
                 PageIndex = request.pageIndex,
                 PageSize = request.pageSize,
-                items = data
+                items = data2
             };
             return pageResult;
         }
@@ -231,7 +240,7 @@ namespace eShopSolution.Application.Catalog.Products
                     _context.ProductImages.Update(thumbnail);
                 }
             }
-
+            _context.ProductTranslations.Update(producttranslation);
             await _context.SaveChangesAsync();
             return request.Id;
         }
@@ -261,7 +270,7 @@ namespace eShopSolution.Application.Catalog.Products
             await _context.SaveChangesAsync();
         }
 
-        public async Task<int> AddImage(int productId, ProductImageCreateRequest request)
+        public async Task<int> AddImage(int productId, ProductImageCreateDto request)
         {
             var productImage = new ProductImage()
             {
@@ -349,6 +358,22 @@ namespace eShopSolution.Application.Catalog.Products
             var result = await _context.ProductImages.FindAsync(imageId);
 
             return result;
+        }
+
+        public async Task<bool> SetCategories(int ProductId, List<ProductCategoryDto> request)
+        {
+            var add = request.Where(r => r.Selected == true).Select(r => r.Id).ToList();
+            var removeall = await _context.ProductInCategories.Where(pt => pt.ProductId == ProductId).ToListAsync();
+            var addall = add.Select(a => new ProductInCategory()
+            {
+                ProductId = ProductId,
+                CategoryId = a
+            });
+            _context.ProductInCategories.RemoveRange(removeall);
+            _context.ProductInCategories.AddRange(addall);
+
+            var rs = _context.SaveChanges();
+            return rs > 0;
         }
     }
 }

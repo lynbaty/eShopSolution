@@ -21,5 +21,9 @@ namespace eShopSolution.AdminWeb.Services
         Task<UserViewModel> GetbyId(Guid Id);
 
         Task<bool> Delete(Guid Id);
+
+        Task<IList<string>> GetRolesbyId(Guid Id);
+
+        Task<bool> AddRolesbyId(Guid Id, UserRolesDto roles);
     }
 }

@@ -107,5 +107,35 @@ namespace eShopSolution.AdminWeb.Services
 
             return response.IsSuccessStatusCode;
         }
+
+        public async Task<IList<string>> GetRolesbyId(Guid Id)
+        {
+            var token = _contextAccessor.HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await client.GetAsync($"/api/Users/{Id}/Roles");
+
+            var body = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<IList<string>>(body);
+
+            return result;
+        }
+
+        public async Task<bool> AddRolesbyId(Guid Id, UserRolesDto roles)
+        {
+            var Json = JsonConvert.SerializeObject(roles);
+            var httpContent = new StringContent(Json, Encoding.UTF8, "application/json");
+
+            var token = _contextAccessor.HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await client.PostAsync($"/api/Users/{Id}/Roles", httpContent);
+
+            return response.IsSuccessStatusCode;
+        }
     }
 }

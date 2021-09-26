@@ -1,0 +1,104 @@
+﻿@using eShopSolution.ViewModels.Products
+@using eShopSolution.ViewModels.Common
+@model PagedResult<ProductViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section LocalScript{
+    <script>
+        setTimeout(function () {
+            $('#productmess').fadeOut()
+        }
+            , 2000)
+    </script>
+}
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Danh sách sản phẩm</h1>
+    <div class="card mb-4">
+        <div class="card-header ">
+            <form asp-action="Index" asp-controller="product" method="get">
+                <div class=" row">
+
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <input class="btn btn-outline-secondary" type="submit" value="Lọc">
+                            </div>
+                            <input class="form-control col-md-4" type="text" name="Keyword" placeholder="any text" aria-label="" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group cmb-3">
+                            <select name="CategoryId" class="form-control"
+                                    asp-items="ViewBag.Categories">
+                                <option selected>---Chọn danh mục---</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class=" card-body">
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Danh sách</li>
+                <li class="breadcrumb-item"><a asp-action="Create" asp-controller="Product">Tạo mới</a></li>
+            </ol>
+            <div class="row">
+                @if (ViewBag.product != null)
+                {
+                    <div id="productmess" class="alert alert-success" role="alert">
+                        @ViewBag.product
+                    </div>
+                }
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <th>
+                            Stock
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.items)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Stock)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { Id = item.Id }) |
+                                @Html.ActionLink("Details", "Details", new { Id = item.Id }) |
+                                @Html.ActionLink("Delete", "Delete", new { Id = item.Id }) |
+                                @Html.ActionLink("SetCategory", "SetCategory", new { Id = item.Id })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @await Component.InvokeAsync("Paged", new PagedResultBase() { PageIndex = Model.PageIndex, PageSize = Model.PageSize, TotalRecords = Model.TotalRecords })
+        </div>
+    </div>
+</div>

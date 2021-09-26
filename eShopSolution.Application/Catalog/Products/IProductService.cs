@@ -1,4 +1,5 @@
 ﻿using eShopSolution.Data.Entities;
+using eShopSolution.ViewModels.Categories;
 using eShopSolution.ViewModels.Common;
 using eShopSolution.ViewModels.Products;
 using Microsoft.AspNetCore.Http;
@@ -28,7 +29,7 @@ namespace eShopSolution.Application.Catalog.Products
 
         Task UpdateViewCount(int productId);
 
-        Task<int> AddImage(int productId, ProductImageCreateRequest request);
+        Task<int> AddImage(int productId, ProductImageCreateDto request);
 
         Task<int> Remove(int imageId);
 
@@ -41,5 +42,7 @@ namespace eShopSolution.Application.Catalog.Products
         //Task<List<ProductViewModel>> GetAll();
 
         Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
+
+        Task<bool> SetCategories(int ProductId, List<ProductCategoryDto> request);
     }
 }

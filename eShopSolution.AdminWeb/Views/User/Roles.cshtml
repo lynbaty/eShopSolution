@@ -1,0 +1,27 @@
+﻿@using eShopSolution.ViewModels.System.Users
+@model UserRolesDto
+
+@{
+    ViewData["Title"] = "Roles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <div class="col-md-4">
+        <h3 class="mt-4">Phân quyền</h3>
+        <div class="card mb-4">
+            <div card-body>
+                <ul class="list-group">
+                    @foreach (var item in Model.roles)
+                    {
+                        <li class="list-group-item">@item</li>
+                    }
+                </ul>
+
+            </div>
+
+        </div>
+        @Html.ActionLink("EditRoles", "EditRoles", new { Id = Model.Id })
+    </div>
+</div>
+

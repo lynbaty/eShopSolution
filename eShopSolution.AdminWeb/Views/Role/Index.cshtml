@@ -1,0 +1,79 @@
+﻿@using eShopSolution.ViewModels.System.Roles
+@using eShopSolution.ViewModels.Common
+@model PagedResult<RoleViewDto>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section LocalScript{
+    <script>
+        setTimeout(function () {
+            $('#rolemess').fadeOut()
+        }
+            , 2000)
+    </script>
+}
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Danh sách phân quyền</h1>
+    <div class="card mb-4">
+        <div class="card-header ">
+            <div class="col-md-6 mt-3">
+                <form asp-action="Index" asp-controller="Role" method="get">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <input class="btn btn-outline-secondary" type="submit" value="Lọc">
+                        </div>
+                        <input class="form-control col-md-4" type="text" name="Keyword" placeholder="Phân quyền hoặc mô tả" aria-label="" aria-describedby="basic-addon1">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card-body">
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Danh sách</li>
+                <li class="breadcrumb-item"><a asp-action="Create" asp-controller="Role">Tạo mới</a></li>
+            </ol>
+            <div class="row">
+                @if (ViewBag.role != null)
+                {
+                    <div id="rolemess" class="alert alert-secondary" role="alert">
+                        @ViewBag.role
+                    </div>
+                }
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Phân quyền
+                        </th>
+                        <th>
+                            Mô tả
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.items)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { name = item.Name }) |
+                                @Html.ActionLink("Details", "Details", new { name = item.Name }) |
+                                @Html.ActionLink("Delete", "Delete", "Role", new { name = item.Name })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @await Component.InvokeAsync("Paged", new PagedResultBase() { PageIndex = Model.PageIndex, PageSize = Model.PageSize, TotalRecords = Model.TotalRecords })
+        </div>
+    </div>
+</div>

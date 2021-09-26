@@ -9,6 +9,6 @@ namespace eShopSolution.Data.Entities
     {
         public string Description { get; set; }
 
-
+        public string UserNamee { set; get; }
     }
 }

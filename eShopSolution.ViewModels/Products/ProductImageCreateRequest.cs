@@ -5,9 +5,8 @@ using System.Text;
 
 namespace eShopSolution.ViewModels.Products
 {
-    public class ProductImageCreateRequest
+    public class ProductImageCreateDto
     {
-       
         public string Caption { get; set; }
 
         public int SortOrder { set; get; }

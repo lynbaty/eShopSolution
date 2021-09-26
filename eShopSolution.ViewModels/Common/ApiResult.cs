@@ -6,13 +6,24 @@ namespace eShopSolution.ViewModels.Common
 {
     public class ApiResult<T>
     {
-        public T Obj { set; get; }
+        public T Result { set; get; }
 
         public string Messenger { set; get; }
 
-        public ApiResult(T obj, string messenger)
+        public ApiResult(T result, string messenger)
         {
-            Obj = obj;
+            Result = result;
+            Messenger = messenger;
+        }
+
+        public ApiResult(T result)
+        {
+            Result = result;
+            Messenger = "";
+        }
+
+        public ApiResult(string messenger)
+        {
             Messenger = messenger;
         }
     }

@@ -1,0 +1,40 @@
+﻿@model eShopSolution.ViewModels.System.Roles.RoleCreateDto
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Tạo phân quyền mới</h1>
+    <div class="card mb-4">
+        @*<div class="card-header">
+                <a class="btn btn-primary" asp-action="Index" asp-controller="User">Về danh sách</a>
+            </div>*@
+        <div class="card-body">
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Role">Danh sách</a></li>
+                <li class="breadcrumb-item active">Tạo mới</li>
+            </ol>
+            <div class="col-md-4">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <input type="submit" value="Tạo mới" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

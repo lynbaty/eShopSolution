@@ -1,0 +1,24 @@
+﻿@model IList<string>
+
+@{
+    ViewData["Title"] = "EditRoles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <div class="col-md-4">
+        <h3 class="mt-4">Chọn phân quyền</h3>
+        <form method="post" asp-controller="User" asp-action="EditRoles">
+            @foreach (var item in Model)
+            {
+                <input class="form-check-input" name="role" type="checkbox" value="@item" />
+                <label class="form-check-label">@item</label>
+                <br />
+            }
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

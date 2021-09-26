@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using eShopSolution.Application.Catalog.Products;
 using eShopSolution.Data.Entities;
+using eShopSolution.ViewModels.Categories;
 using eShopSolution.ViewModels.Products;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -52,12 +53,9 @@ namespace eShopSolution.BackendApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ProductCreateRequest request)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
             var result = await _productService.Create(request);
 
             var product = await _productService.GetbyId(result, request.LanguageId);
@@ -66,7 +64,8 @@ namespace eShopSolution.BackendApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] ProductUpdateRequest request)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Update([FromForm] ProductUpdateRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -129,7 +128,7 @@ namespace eShopSolution.BackendApi.Controllers
         }
 
         [HttpPost("/{productId}/images")]
-        public async Task<IActionResult> AddImages([FromRoute] int productId, [FromBody] ProductImageCreateRequest request)
+        public async Task<IActionResult> AddImages([FromRoute] int productId, [FromBody] ProductImageCreateDto request)
         {
             if (!ModelState.IsValid)
             {
@@ -178,6 +177,14 @@ namespace eShopSolution.BackendApi.Controllers
             var result = await _productService.UpdateImage(imageId, request);
 
             return CreatedAtAction(nameof(GetImageById), new { imageId = result, productId = productId }, result);
+        }
+
+        [HttpPost("/categories")]
+        public async Task<IActionResult> SetCategories([FromQuery] int productId, [FromBody] List<ProductCategoryDto> request)
+        {
+            var x = await _productService.SetCategories(productId, request);
+
+            return Ok();
         }
     }
 }

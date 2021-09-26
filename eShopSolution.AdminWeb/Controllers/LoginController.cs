@@ -53,6 +53,7 @@ namespace eShopSolution.AdminWeb.Controllers
                 return View();
             }
             HttpContext.Session.SetString("Token", token);
+            HttpContext.Session.SetString("DefaultLanguageId", _configuration["DefaultLanguageId"]);
             var userPrincipal = this.ValidateToken(token);
             var authProperties = new AuthenticationProperties
             {
